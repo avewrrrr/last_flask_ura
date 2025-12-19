@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}ПРОФИЛЬ{% endblock %}
+
+{% block content %}
+<h2>Профиль</h2>
+
+{% if profile and profile.ava %}
+    <p>Текущая фотка для души:</p>
+    <img src="{{ url_for('static', filename=profile.ava) }}" width="120">
+{% else %}
+    <p>Нету</p>
+{% endif %}
+
+<hr>
+
+<h3>Выбор аватара</h3>
+
+<form method="post">
+    <textarea name="bio" placeholder="смешнявка">{{ profile.bio if profile else '' }}</textarea>
+
+    <p>Выбор фото для души:</p>
+
+    <label>
+        <input type="radio" name="ava" value="ava1.jpg"
+        {% if profile and profile.ava == 'ava1.jpg' %}checked{% endif %}>
+        <img src="{{ url_for('static', filename='ava1.jpg') }}" width="60">
+    </label>
+
+    <label>
+        <input type="radio" name="ava" value="ava2.jpg"
+        {% if profile and profile.ava == 'ava2.jpg' %}checked{% endif %}>
+        <img src="{{ url_for('static', filename='ava2.jpg') }}" width="60">
+    </label>
+
+    <label>
+        <input type="radio" name="ava" value="ava3.jpg"
+        {% if profile and profile.ava == 'ava3.jpg' %}checked{% endif %}>
+        <img src="{{ url_for('static', filename='ava3.jpg') }}" width="60">
+    </label>
+
+    <br><br>
+    <button type="submit">Сохранить профиль</button>
+</form>
+
+<hr>
+
+<h3>Мои заметки</h3>
+
+{% for note in notes %}
+    <div>
+        <h4>{{ note.title }}</h4>
+        <p>{{ note.text_in_note }}</p>
+    </div>
+{% else %}
+    <p>Заметок нет</p>
+{% endfor %}
+
+{% endblock %}

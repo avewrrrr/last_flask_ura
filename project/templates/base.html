@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ЗАМЕТКИ{% endblock %}</title>
+
+    {% set theme = request.cookies.get('theme', 'light') %}
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+
+            {% if theme == 'pink' %}
+                background: #ffe6f0;
+            {% else %}
+                background: #f4f4f4;
+            {% endif %}
+        }
+
+        .container {
+            width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+
+            {% if theme == 'pink' %}
+                background: #fff0f6;
+            {% else %}
+                background: white;
+            {% endif %}
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .note {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="nav">
+        <a href="{{ url_for('main_page') }}">Мейн Пейдж</a>
+
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('notes') }}">Заметки</a>
+            <a href="{{ url_for('profile') }}">Профиль</a>
+            <a href="{{ url_for('logout') }}">Выход</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Вход</a>
+            <a href="{{ url_for('register') }}">Регистрация</a>
+        {% endif %}
+
+        ^-^ Tema:
+        <a href="{{ url_for('set_theme', theme='light') }}">Белая</a>
+        <a href="{{ url_for('set_theme', theme='pink') }}">Розовая</a>
+    </div>
+
+    {% block content %}{% endblock %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Заметки{% endblock %}
+
+{% block content %}
+<h2>Мои заметки</h2>
+
+<form method="get" action="{{ url_for('notes') }}">
+    <input type="text"
+           name="q"
+           placeholder="Поиск по имени"
+           value="{{ request.args.get('q', '') }}">
+    <button type="submit">Поиск</button>
+</form>
+
+{% if search_query %}
+    {% if search_count > 0 %}
+        <div style="padding:10px; border:1px solid green; margin-top:10px;">
+            Найдено заметок: {{ search_count }}
+        </div>
+    {% else %}
+        <div style="padding:10px; border:1px solid red; margin-top:10px;">
+            По запросу "{{ search_query }}" ничего не написано
+        </div>
+    {% endif %}
+{% endif %}
+
+<hr>
+
+<h3>Создать заметку</h3>
+
+<form method="post">
+    <input type="text"
+           name="title"
+           placeholder="Заголовок"
+           required>
+
+    <textarea name="text"
+              placeholder="Текст заметки"
+              required></textarea>
+
+    <button type="submit">Создать</button>
+</form>
+
+<hr>
+
+
+<h3>Список заметок</h3>
+{% for note in notes %}
+    <div class="note">
+
+        <form method="post"
+              action="{{ url_for('update_note', note_id=note.id) }}">
+
+            <input type="text" name="title" value="{{ note.title }}">
+            <textarea name="text">{{ note.text_in_note }}</textarea>
+
+            <button type="submit">Сохранить</button>
+        </form>
+
+        <a href="{{ url_for('delete_note', note_id=note.id) }}">
+            Удалить
+        </a>
+
+    </div>
+{% else %}
+    <p>Заметок нет</p>
+{% endfor %}
+
+{% endblock %}

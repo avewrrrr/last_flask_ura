@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}ГЛАВНАЯ{% endblock %}
+
+{% block content %}
+<h1>УРА</h1>
+<b>НАКОНЕЦ-ТО РАБОТАЕТ</b>
+
+{% if not session.get('user_id') %}
+    <a href="{{ url_for('login') }}">Войти</a><br><br>
+    <a href="{{ url_for('register') }}">Регистрация</a>
+{% endif %}
+{% endblock %}
